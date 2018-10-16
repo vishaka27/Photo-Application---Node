@@ -1,22 +1,16 @@
 const express = require('express');
+const path = require('path');
+
+global.appRoot = path.resolve(__dirname);
+
+const data = require(appRoot + '/photo-list.json');
 
 const app = express();
 
-const request = require('request');
+const port = process.env.port || 5000;
 
-const port = 5000;
-
-const url = 'https://jsonplaceholder.typicode.com/photos';
-
-app.get('/', (req, res, next) => {
-    request({
-        url: url,
-        json: true
-    }, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            res.send(body);
-        }
-    });
-});
+app.get('/', (req, res) => {
+    res.send(data);
+})
 
 app.listen(port, () => console.log(`Listening to port ${port}`));
